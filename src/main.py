@@ -5,10 +5,10 @@ from pathlib import Path
 import datetime
 import os
 import re
+from typing import List
 from subprocess import call
 
 from rich.console import Console
-from rich.markdown import Markdown
 import typer
 
 
@@ -71,8 +71,6 @@ def at(fecha:str):
     list_tasks(note)
 
 
-
-
 @app.command()
 def today():
     note = get_current_note_path()
@@ -81,15 +79,17 @@ def today():
 
 
 @app.command()
-def done(task_name: str):
+def done(words: List[str] = typer.Argument(...)):
     note = get_current_note_path()
+    task_name = ' '.join(words)
     with open(note, 'a', encoding='utf-8') as f_out:
         f_out.write(f'[x] {task_name}')
 
 
 @app.command()
-def todo(task_name: str):
+def todo(words: List[str] = typer.Argument(...)):
     note = get_current_note_path()
+    task_name = ' '.join(words)
     with open(note, 'a', encoding='utf-8') as f_out:
         print(f'\n[ ] {task_name}', file=f_out)
 
